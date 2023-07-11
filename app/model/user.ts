@@ -12,6 +12,9 @@ export interface UserProps {
   phoneNumber?: string;
   createdAt: Date;
   updatedAt: Date;
+  type: "email" | "cellphone" | "oauth";
+  provider?: "gitee";
+  oauthID?: string;
 }
 
 function initUserModel(app: Application) {
@@ -20,11 +23,14 @@ function initUserModel(app: Application) {
   const UserSchema = new Schema<UserProps>(
     {
       username: { type: String, unique: true, required: true },
-      password: { type: String, required: true },
+      password: { type: String },
       email: { type: String },
       nickName: { type: String },
       picture: { type: String },
       phoneNumber: { type: String },
+      type: { type: String, default: "email" },
+      provider: { type: String },
+      oauthID: { type: String },
     },
     {
       //collection: "user",
@@ -38,11 +44,12 @@ function initUserModel(app: Application) {
     }
   );
 
-  UserSchema.plugin(AutoIncrement, { inc_field: "id", id: "users_id_counter" });
-  return (
-    app.mongoose.models.User ||
-    app.mongoose.model<UserProps>("User", UserSchema)
-  );
+  UserSchema.plugin(AutoIncrement, {
+    inc_field: "id",
+    id: "users_id_counter",
+  });
+
+  return app.mongoose.model<UserProps>("User", UserSchema);
 }
 
 export default initUserModel;

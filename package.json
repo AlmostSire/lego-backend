@@ -8,15 +8,22 @@
     "typescript": true
   },
   "dependencies": {
+    "@alicloud/dysmsapi20170525": "^2.0.24",
+    "@alicloud/openapi-client": "^0.4.6",
     "axios": "^1.4.0",
+    "dotenv": "^16.3.1",
     "egg": "^3",
     "egg-bcrypt": "^1.1.0",
+    "egg-cors": "^2.2.3",
+    "egg-jwt": "^3.1.7",
     "egg-mongoose": "^3.3.1",
+    "egg-redis": "^2.5.0",
     "egg-scripts": "^2",
     "egg-validate": "^2.0.2",
     "egg-view-nunjucks": "^2.3.0",
     "mongoose": "^5.13.19",
-    "mongoose-sequence": "^5.3.1"
+    "mongoose-sequence": "^5.3.1",
+    "nanoid": "^3.1.30"
   },
   "devDependencies": {
     "@eggjs/tsconfig": "^1.1.0",

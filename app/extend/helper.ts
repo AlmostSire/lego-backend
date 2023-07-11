@@ -1,7 +1,7 @@
 import { Context } from "egg";
-import { userErrorMessages } from "../controller/user";
+import { globalErrorMessages, GlobalErrorTypes } from "../error";
 
-interface RespType {
+interface SuccessRespType {
   ctx: Context;
   res?: any;
   msg?: string;
@@ -9,12 +9,12 @@ interface RespType {
 
 interface ErrorRespType {
   ctx: Context;
-  errorType: keyof typeof userErrorMessages;
+  errorType: GlobalErrorTypes;
   error?: any;
 }
 
 export default {
-  success({ ctx, res, msg }: RespType) {
+  success({ ctx, res, msg }: SuccessRespType) {
     ctx.body = {
       errno: 0,
       data: res ? res : null,
@@ -23,7 +23,7 @@ export default {
     ctx.status = 200;
   },
   error({ ctx, errorType, error }: ErrorRespType) {
-    const { message, errno } = userErrorMessages[errorType];
+    const { message, errno } = globalErrorMessages[errorType];
     ctx.body = {
       errno,
       message: message || "请求错误",

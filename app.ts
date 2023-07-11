@@ -1,6 +1,6 @@
 import { Application, IBoot } from "egg";
 //import assert from "assert";
-import { join } from "path";
+//import { join } from "path";
 
 export default class AppBoot implements IBoot {
   private readonly app: Application;
@@ -15,6 +15,7 @@ export default class AppBoot implements IBoot {
       async set(key, value) {
         app.logger.info("key", key);
         app.logger.info("value", value);
+        console.log("almost");
         app.sessionMap[key] = value;
       },
       async destroy(key) {
@@ -22,16 +23,16 @@ export default class AppBoot implements IBoot {
       },
     };
   }
-  configWillLoad() {
-    console.log("config", this.app.config.baseUrl);
-    console.log("enable middleware", this.app.config.coreMiddleware);
-    this.app.config.coreMiddleware.unshift("myLogger");
-  }
+  // configWillLoad() {
+  //   console.log("config", this.app.config.baseUrl);
+  //   console.log("enable middleware", this.app.config.coreMiddleware);
+  //   this.app.config.coreMiddleware.unshift("myLogger");
+  // }
 
   async willReady() {
     console.log("enable willReady", this.app.config.coreMiddleware);
-    const dir = join(this.app.config.baseDir, "app/model");
-    this.app.loader.loadToApp(dir, "model", { caseStyle: "upper" });
+    // const dir = join(this.app.config.baseDir, "app/model");
+    // this.app.loader.loadToApp(dir, "model", { caseStyle: "upper" });
   }
 
   async didReady() {
