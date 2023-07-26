@@ -1,6 +1,5 @@
-import { Service } from "egg";
-import { UserProps } from "../model/user";
-import * as $Dysmsapi from "@alicloud/dysmsapi20170525";
+import { Service } from 'egg';
+import { SendSmsRequest } from '@alicloud/dysmsapi20170525';
 
 export interface GiteeUserResp {
   id: number;
@@ -11,74 +10,67 @@ export interface GiteeUserResp {
 }
 
 export default class UserService extends Service {
-  public async createByEmail(payload: UserProps) {
-    const { username, password } = payload;
+  async createByEmail({
+    username,
+    password,
+  }: {
+    username: string;
+    password: string;
+  }) {
+    // 密码加密
     const hash = await this.ctx.genHash(password);
-    const userCreateData: Partial<UserProps> = {
+    // 创建用户
+    return this.ctx.model.User.create({
       username,
       password: hash,
       email: username,
-    };
-
-    return this.ctx.model.User.create(userCreateData);
+    });
   }
 
   async findById(id: string) {
     return this.ctx.model.User.findById(id);
   }
 
+  async findByUsername(username: string) {
+    return this.ctx.model.User.findOne({ username });
+  }
+
   async sendSMS(phoneNumber: string, veriCode: string) {
-    let sendSmsRequest = new $Dysmsapi.SendSmsRequest({
-      signName: "阿里云短信测试",
-      templateCode: "SMS_154950909",
+    let sendSmsRequest = new SendSmsRequest({
+      signName: '阿里云短信测试',
+      templateCode: 'SMS_154950909',
       phoneNumbers: phoneNumber,
       templateParam: `{\"code\":\"${veriCode}\"}`,
     });
 
-    const resp = await this.app.ALClient.sendSms(sendSmsRequest);
-    return resp;
-  }
-
-  async findByUserName(username: string) {
-    return this.ctx.model.User.findOne({ username });
+    return await this.app.ALClient.sendSms(sendSmsRequest);
   }
 
   async loginByCellphone(cellphone: string) {
     const { ctx, app } = this;
-
-    const user = await this.findByUserName(cellphone);
     // 检查用户是否存在
-    if (user) {
-      // generate token
-      const token = app.jwt.sign(
-        { username: user.username, _id: user._id },
-        app.config.jwt.secret
-      );
-      return token;
+    let user = await this.findByUsername(cellphone);
+    // 不存在则新建用户
+    if (!user) {
+      user = await ctx.model.User.create({
+        username: cellphone,
+        phoneNumber: cellphone,
+        nickName: `lego${cellphone.slice(-4)}`,
+        type: 'cellphone',
+      });
     }
-    // 新建一个用户
-    const userCreatedData: Partial<UserProps> = {
-      username: cellphone,
-      phoneNumber: cellphone,
-      nickName: `lego${cellphone.slice(-4)}`,
-      type: "cellphone",
-    };
-
-    const newUser = await ctx.model.User.create(userCreatedData);
-    const token = app.jwt.sign(
-      { username: newUser.username, _id: newUser._id },
-      app.config.jwt.secret
-    );
-    return token;
+    // 生成 token 返回
+    const payload = { username: user.username, _id: user._id };
+    return app.jwt.sign(payload, app.config.jwt.secret);
   }
 
   async getAccessToken(code: string) {
     const { ctx, app } = this;
     const { cid, secret, redirecURL, authURL } = app.config.giteeOauthConfig;
     const { data } = await ctx.curl(authURL, {
-      method: "post",
-      contentType: "json",
-      dataType: "json",
+      method: 'post',
+      contentType: 'json',
+      dataType: 'json',
       data: {
         code,
         client_id: cid,
@@ -96,7 +88,7 @@ export default class UserService extends Service {
     const { data } = await ctx.curl<GiteeUserResp>(
       `${giteeUserAPI}?access_token=${access_token}`,
       {
-        dataType: "json",
+        dataType: 'json',
       }
     );
     app.logger.info(data);
@@ -107,38 +99,27 @@ export default class UserService extends Service {
     const { ctx, app } = this;
     // 获取 access_token
     const accessToken = await this.getAccessToken(code);
-    // 获取用户信息
-    const user = await this.getGiteeUserData(accessToken);
+    // 获取 gitee 用户信息
+    const userData = await this.getGiteeUserData(accessToken);
     // 检查用户信息是否存在
-    const { id, name, avatar_url, email } = user;
-    // Gitee + id
-    // Github + id
-    // VX + id
-    // 假如已经存在
-    const existUser = await this.findByUserName(`Gitee${id}`);
-    if (existUser) {
-      const token = app.jwt.sign(
-        { username: existUser.username, _id: existUser._id },
-        app.config.jwt.secret
-      );
-      return token;
+    const { id, name, avatar_url, email } = userData;
+    let user = await this.findByUsername(`Gitee${id}`);
+    // 如果用户信息不存在，新建用户
+    if (!user) {
+      user = await ctx.model.User.create({
+        oauthID: id.toString(),
+        provider: 'gitee',
+        username: `Gitee${id}`,
+        picture: avatar_url,
+        nickName: name,
+        email,
+        type: 'oauth',
+      });
     }
-    // 假如不存在，新建用户
-    const userCreateData: Partial<UserProps> = {
-      oauthID: id.toString(),
-      provider: "gitee",
-      username: `Gitee${id}`,
-      picture: avatar_url,
-      nickName: name,
-      email,
-      type: "oauth",
-    };
-
-    const newUser = await ctx.model.User.create(userCreateData);
-    const token = app.jwt.sign(
-      { username: newUser.username, _id: newUser._id },
+    // 返回 token
+    return app.jwt.sign(
+      { username: user.username, _id: user._id },
       app.config.jwt.secret
     );
-    return token;
   }
 }

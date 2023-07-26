@@ -1,41 +1,34 @@
-import { Application } from "egg";
+import { Application } from 'egg';
 
 export default (app: Application) => {
-  const { router, controller, jwt } = app;
+  const { router, controller } = app;
 
-  // const jwt = middleware.jwt({
-  //   secret: config.jwt.secret,
-  // });
+  router.prefix('/api');
 
-  const jwtMiddleware = jwt as any;
+  router.post('/users/create', controller.user.createByEmail);
+  router.get('/users/getUserInfo', controller.user.getUserInfo);
+  router.post('/users/loginByEmail', controller.user.loginByEmail);
 
-  router.post("/api/users/create", controller.user.createByEmail);
-  router.get("/api/users/getUserInfo", jwtMiddleware, controller.user.show);
-  router.post("/api/users/loginByEmail", controller.user.loginByEmail);
-  router.post("/api/users/genVeriCode", controller.user.sendVeriCode);
-  router.post(
-    "/api/users/loginByPhoneNumber",
-    controller.user.loginByCellphone
-  );
-  router.get("/api/users/passport/gitee", controller.user.oauth);
-  router.get(
-    "/api/users/passport/gitee/callback",
-    controller.user.oauthByGitee
-  );
+  router.post('/users/genVeriCode', controller.user.sendVeriCode);
+  router.post('/users/loginByPhoneNumber', controller.user.loginByCellphone);
 
-  router.post("/api/works", jwtMiddleware, controller.work.createWork);
-  router.get("/api/works", jwtMiddleware, controller.work.myList);
-  router.get("/api/templates", jwtMiddleware, controller.work.templateList);
-  router.patch("/api/works/:id", jwtMiddleware, controller.work.update);
-  router.delete("/api/works/:id", jwtMiddleware, controller.work.delete);
-  router.post(
-    "/api/works/publishWork/:id",
-    jwtMiddleware,
-    controller.work.publishWork
-  );
-  router.post(
-    "/api/works/publishTemplate/:id",
-    jwtMiddleware,
-    controller.work.publishTemplate
-  );
+  router.get('/users/passport/gitee', controller.user.oauth);
+  router.get('/users/passport/gitee/callback', controller.user.oauthByGitee);
+
+  router.post('/works', controller.work.createWork);
+  router.get('/works', controller.work.myList);
+  router.get('/works/:id', controller.work.myWork);
+  router.get('/templates', controller.work.templateList);
+  router.patch('/works/:id', controller.work.update);
+  router.delete('/works/:id', controller.work.delete);
+  router.post('/works/publishWork/:id', controller.work.publishWork);
+  router.post('/works/publishTemplate/:id', controller.work.publishTemplate);
+
+  router.post('/utils/upload-img', controller.utils.uploadMutipleFiles);
+  router.get('/pages/:idAndUuid', controller.utils.renderH5Page);
+
+  router.post('/channels', controller.work.createChannel);
+  router.get('/channels/:id', controller.work.getWorkChannel);
+  router.patch('/channels/:id', controller.work.updateChannelName);
+  router.delete('/channels/:id', controller.work.deleteChannel);
 };

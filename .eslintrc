@@ -1,4 +1,8 @@
 {
   "extends": "eslint-config-egg",
-  "root": true
+  "root": true,
+  "rules": {
+    "array-bracket-spacing": "off",
+    "arrow-parens": "off"
+  }
 }

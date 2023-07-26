@@ -8,18 +8,30 @@
   </head>
   <body>
     <h1>授权成功</h1>
-    <h1>两秒后关闭</h1>
+    <h1>
+      <span>三秒后关闭</span>
+      <span id="count">3</span>
+    </h1>
   </body>
   <script>
-    window.onload = function () {
-      const message = {
-        type: "oauth-token",
-        token: "{{ token }}"
-      }
-      setTimeout(() => {
+    const message = {
+      type: "oauth-token",
+      token: "{{ token }}"
+    }
+    const countEle = document.getElementById("count");
+    let timer;
+    function changeCount () {
+      let count = parseInt(countEle.innerText);
+      count --;
+      countEle.innerText = count;
+      if (count === 0) {
+        clearInterval(timer);
         window.opener.postMessage(message, "http://localhost:8080");
         window.close();
-      }, 2000)
+      }
+    }
+    window.onload = function () {
+      timer = setInterval(changeCount, 1000)
     }
   </script>
 </html>
