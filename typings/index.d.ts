@@ -21,6 +21,13 @@ declare module 'egg' {
     oss: {
       client?: ClientOptions;
     };
+    // giteeOauthConfig: {
+    //   cid: string;
+    //   secret: string;
+    //   redirecURL: string;
+    //   authURL: string;
+    //   giteeUserAPI: string;
+    // };
   }
 
   // session 外部储存扩展

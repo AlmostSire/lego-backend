@@ -61,7 +61,9 @@ export default class UserService extends Service {
     }
     // 生成 token 返回
     const payload = { username: user.username, _id: user._id };
-    return app.jwt.sign(payload, app.config.jwt.secret);
+    return app.jwt.sign(payload, app.config.jwt.secret, {
+      expiresIn: app.config.jwtExpires,
+    });
   }
 
   async getAccessToken(code: string) {
@@ -119,7 +121,8 @@ export default class UserService extends Service {
     // 返回 token
     return app.jwt.sign(
       { username: user.username, _id: user._id },
-      app.config.jwt.secret
+      app.config.jwt.secret,
+      { expiresIn: app.config.jwtExpires }
     );
   }
 }

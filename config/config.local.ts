@@ -8,6 +8,20 @@ export default (appInfo: EggAppInfo) => {
     csrf: {
       enable: false,
     },
+    domainWhiteList: ['http://localhost:8080'],
+  };
+
+  config.mongoose = {
+    url: 'mongodb://localhost:27017/lego',
+  };
+
+  config.redis = {
+    client: {
+      port: 6379,
+      host: '127.0.0.1',
+      password: '',
+      db: 0,
+    },
   };
 
   config.bcrypt = {
@@ -33,7 +47,7 @@ export default (appInfo: EggAppInfo) => {
       { prefix: '/uploads', dir: join(appInfo.baseDir, 'uploads') },
     ],
   };
+  config.jwtExpires = '2h';
 
-  config.baseUrl = 'http://localhost:7001';
   return config;
 };

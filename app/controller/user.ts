@@ -88,7 +88,7 @@ export default class UserController extends Controller {
       { username: user.username, _id: user._id },
       app.config.jwt.secret,
       {
-        expiresIn: 60 * 60 * 2, // 一小时后过期
+        expiresIn: app.config.jwtExpires,
       }
     );
     ctx.helper.success({

@@ -12,10 +12,6 @@ export default (appInfo: EggAppInfo) => {
   // add your middleware config here
   // config.middleware = ['customError'];
 
-  config.mongoose = {
-    url: 'mongodb://localhost:27017/lego',
-  };
-
   config.view = {
     defaultViewEngine: 'nunjucks',
   };
@@ -31,19 +27,10 @@ export default (appInfo: EggAppInfo) => {
     ],
   };
 
-  config.redis = {
-    client: {
-      port: 6379,
-      host: '127.0.0.1',
-      password: '',
-      db: 0,
-    },
-  };
-
-  config.cors = {
-    origin: 'http://localhost:8080',
-    allowMethods: 'GET,HEAD,PUT,OPTIONS,POST,DELETE,PATCH',
-  };
+  // config.cors = {
+  //   origin: 'http://localhost:8080',
+  //   allowMethods: 'GET,HEAD,PUT,OPTIONS,POST,DELETE,PATCH',
+  // };
 
   config.oss = {
     client: {
@@ -65,7 +52,6 @@ export default (appInfo: EggAppInfo) => {
     endpoint: 'dysmsapi.aliyuncs.com',
   };
 
-  // gitee oauth config
   const giteeOauthConfig = {
     cid: process.env.GITEE_CID,
     secret: process.env.GITEE_SECRET,
@@ -75,10 +61,10 @@ export default (appInfo: EggAppInfo) => {
   };
 
   const bizConfig = {
+    baseUrl: 'http://localhost:7001',
     aliCloudConfig,
     giteeOauthConfig,
     H5BaseURL: 'http://localhost:7001/api/pages',
-    baseUrl: 'http://localhost:7001',
   };
 
   return {
