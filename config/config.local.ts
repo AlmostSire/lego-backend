@@ -13,16 +13,21 @@ export default (appInfo: EggAppInfo) => {
 
   config.mongoose = {
     url: 'mongodb://localhost:27017/lego',
-  };
-
-  config.redis = {
-    client: {
-      port: 6379,
-      host: '127.0.0.1',
-      password: '',
-      db: 0,
+    options: {
+      user: 'root',
+      pass: '123456',
+      authSource: 'admin',
     },
   };
+
+  // config.redis = {
+  //   client: {
+  //     port: 6379,
+  //     host: '127.0.0.1',
+  //     password: '',
+  //     db: 0,
+  //   },
+  // };
 
   config.bcrypt = {
     saltRounds: 10,
