@@ -10,5 +10,5 @@ jobs:
         uses: actions/checkout@v2
       - run: echo "the ${{ github.repository }} has been cloned"
       - name: List files in the repo
-      - run: |
+        run: |
           ls ${{ github.workspace }}
