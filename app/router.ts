@@ -5,6 +5,8 @@ export default (app: Application) => {
 
   router.prefix('/api');
 
+  router.get('/ping', controller.home.index);
+
   router.post('/users/create', controller.user.createByEmail);
   router.get('/users/getUserInfo', controller.user.getUserInfo);
   router.post('/users/loginByEmail', controller.user.loginByEmail);

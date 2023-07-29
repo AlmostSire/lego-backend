@@ -20,14 +20,14 @@ export default (appInfo: EggAppInfo) => {
     },
   };
 
-  // config.redis = {
-  //   client: {
-  //     port: 6379,
-  //     host: '127.0.0.1',
-  //     password: '',
-  //     db: 0,
-  //   },
-  // };
+  config.redis = {
+    client: {
+      port: 6379,
+      host: '127.0.0.1',
+      password: '',
+      db: 0,
+    },
+  };
 
   config.bcrypt = {
     saltRounds: 10,

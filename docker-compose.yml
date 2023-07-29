@@ -13,9 +13,19 @@ services:
     #   - MONGO_INITDB_ROOT_PASSWORD=pass
     env_file:
       - .env
+  lego-redis:
+    image: redis
+    container_name: lego-redis
+    ports:
+      - 6379:6379
+    env_file:
+      - .env
+    command: >
+      -- requirepass ${REDIS_PASSWORD}
   lego-backend:
     depends_on:
       - lego-mongo
+      - lego-redis
     build:
       context: . # 当前目录
       dockerfile: Dockerfile # 基于 Dockerfile 构建
