@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "triggered by a ${{ github.event_name }} event"
-      - run: ehco "running on a ${{ runner.os }} server hosted by github"
+      - run: echo "running on a ${{ runner.os }} server hosted by github"
       - name: check out repo code
         uses: actions/checkout@v2
       - run: echo "the ${{ github.repository }} has been cloned"
