@@ -6,7 +6,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          repository: 'vikinmute/lego-bricks'
+          repository: 'vikingmute/lego-bricks'
       - name: List files in the repo
         run: |
           ls ${{ github.workspace }}
