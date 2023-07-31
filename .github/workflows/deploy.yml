@@ -51,7 +51,7 @@ jobs:
           # 清理工作
           script: |
             docker login --username=${{ secrets.ACR_USERNAME }} --password=${{ secrets.ACR_PASSWORD }} registry.cn-shanghai.aliyuncs.com
-            cd ~/lego-backend
-
-            docker compose -f docker-compose-online.yml down
-            docker compose -f docker-compose-online.yml up -d
+            docker compose -f ~/lego-backend/docker-compose-online.yml down
+            docker compose -f ~/lego-backend/docker-compose-online.yml up -d
+            rm -rf .env
+            docker logout registry.cn-shanghai.aliyuncs.com
