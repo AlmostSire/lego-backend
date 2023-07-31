@@ -53,6 +53,5 @@ jobs:
             docker login --username=${{ secrets.ACR_USERNAME }} --password=${{ secrets.ACR_PASSWORD }} registry.cn-shanghai.aliyuncs.com
             docker compose -f ~/lego-backend/docker-compose-online.yml down
             docker compose -f ~/lego-backend/docker-compose-online.yml up -d
-            cat .env
             rm -rf .env
             docker logout registry.cn-shanghai.aliyuncs.com
