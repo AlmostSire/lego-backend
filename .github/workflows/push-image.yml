@@ -17,8 +17,8 @@ jobs:
         with:
           login-server: registry.cn-shanghai.aliyuncs.com
           region-id: cn-shanghai
-          username: '${{ secrets.ACR_USERNAME }}'
-          password: '${{ secrets.ACR_PASSWORD }}'
+          username: '${{ secrets.ARC_PASSWORD }}'
+          password: '${{ secrets.ARC_PASSWORD }}'
       # 使用正确的阿里云 tag 进行 docker build
       - name: Build image for Docker
         run: docker build --tag registry.cn-shanghai.aliyuncs.com/almostlover/lego:0.0.2 .
