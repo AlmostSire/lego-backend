@@ -52,5 +52,6 @@ jobs:
           script: |
             docker login --username=${{ secrets.ACR_USERNAME }} --password=${{ secrets.ACR_PASSWORD }} registry.cn-shanghai.aliyuncs.com
             cd ~/lego-backend
+
             docker compose -f docker-compose-online.yml down
             docker compose -f docker-compose-online.yml up -d
