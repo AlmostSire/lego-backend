@@ -7,8 +7,8 @@ dotenv.config();
 const publicPath = path.resolve(__dirname, '../app/public');
 // 新建一个实例
 const client = new Client({
-  accessKeyId: process.env.ALC_ACCESS_KEY_ID || '',
-  accessKeySecret: process.env.ALC_ACCESS_KEY_SECRET || '',
+  accessKeyId: process.env.ALC_ACCESS_KEY || '',
+  accessKeySecret: process.env.ALC_ACCESS_SECRET || '',
   bucket: 'almost-backend',
   endpoint: 'oss-cn-shanghai.aliyuncs.com',
 });

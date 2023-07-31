@@ -6,7 +6,7 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 # 从本地拷贝对应的文件到工作区
 COPY package.json package-lock.json /usr/src/app/
-RUN npm install --registry=https://registry.npmmirror.com
+RUN npm install
 COPY . /usr/src/app/
 RUN npm run tsc
 # 告知当前 Docker image 暴露的是 7001 端口
