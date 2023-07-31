@@ -1,5 +1,6 @@
 name: build image, push to ACR
 on: [push]
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
