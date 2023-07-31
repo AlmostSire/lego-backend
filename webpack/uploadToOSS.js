@@ -8,7 +8,7 @@ const publicPath = path.resolve(__dirname, '../app/public');
 // 新建一个实例
 const client = new Client({
   accessKeyId: process.env.ALC_ACCESS_KEY || '',
-  accessKeySecret: process.env.ALC_ACCESS_SECRET || '',
+  accessKeySecret: process.env.ALC_SECRET_KEY || '',
   bucket: 'almost-backend',
   endpoint: 'oss-cn-shanghai.aliyuncs.com',
 });

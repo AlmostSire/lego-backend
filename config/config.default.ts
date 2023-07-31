@@ -35,7 +35,7 @@ export default (appInfo: EggAppInfo) => {
   config.oss = {
     client: {
       accessKeyId: process.env.ALC_ACCESS_KEY || '',
-      accessKeySecret: process.env.ALC_ACCESS_SECRET || '',
+      accessKeySecret: process.env.ALC_SECRET_KEY || '',
       bucket: 'almost-backend',
       endpoint: 'oss-cn-shanghai.aliyuncs.com',
     },
@@ -48,7 +48,7 @@ export default (appInfo: EggAppInfo) => {
 
   const aliCloudConfig = {
     accessKeyId: process.env.ALC_ACCESS_KEY,
-    accessKeySecret: process.env.ALC_ACCESS_SECRET,
+    accessKeySecret: process.env.ALC_SECRET_KEY,
     endpoint: 'dysmsapi.aliyuncs.com',
   };
 
