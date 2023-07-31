@@ -1,7 +1,7 @@
-name: almost push image
+name: build image, push to ACR
 on: [push]
 jobs:
-  SECRET-SSH-ACTIONS:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
       - uses: appleboy/ssh-action@master
