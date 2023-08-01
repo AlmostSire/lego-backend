@@ -56,7 +56,7 @@
     "node": ">=16.0.0"
   },
   "scripts": {
-    "start": "egg-scripts start --daemon --port 7002 --title=egg-server-lego-backend",
+    "start": "egg-scripts start --daemon --port 7002 --title=lego-backend",
     "stop": "egg-scripts stop --title=egg-server-lego-backend",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",
