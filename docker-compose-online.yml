@@ -5,7 +5,7 @@ services:
     container_name: lego-mongo
     volumes:
       - '.docker-volumes/mongo/data:/data/db'
-      - '$PWD/mongo-entrypoint/:/docker-entrypoint-initdb.d/'
+      - './mongo-entrypoint/:/docker-entrypoint-initdb.d/'
     ports:
       - 27017:27017
     env_file:
