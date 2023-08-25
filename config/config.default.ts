@@ -7,34 +7,21 @@ export default (appInfo: EggAppInfo) => {
   config.keys = appInfo.name + "_1686654480493_3280";
 
   // add your middleware config here
-  //config.middleware = ['myLogger'];
+
+  // 本地开发关闭 csrf 限制
   config.security = {
     csrf: {
       enable: false,
     },
   };
 
-  config.mongoose = {
-    url: "mongodb://localhost:27017/lego",
-  };
-
-  config.session = {
-    encrypt: false,
-  };
-
-  config.bcrypt = {
-    saltRounds: 10,
-  };
-
+  // 设置模版引擎
   config.view = {
     defaultViewEngine: "nunjucks",
   };
 
   const bizConfig = {
-    myLogger: {
-      allowedMethod: ["GET"],
-    },
-    baseUrl: "default.url",
+    //baseUrl: "default.url",
   };
 
   return {
