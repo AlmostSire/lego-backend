@@ -7,6 +7,7 @@ export default (appInfo: EggAppInfo) => {
   config.keys = appInfo.name + "_1686654480493_3280";
 
   // add your middleware config here
+  // config.middleware = ["myLogger"];
 
   // 本地开发关闭 csrf 限制
   config.security = {
@@ -20,8 +21,17 @@ export default (appInfo: EggAppInfo) => {
     defaultViewEngine: "nunjucks",
   };
 
+  // 设置日志配置
+  config.logger = {
+    consoleLevel: "DEBUG",
+  };
+
+  // 业务逻辑配置信息
   const bizConfig = {
-    //baseUrl: "default.url",
+    baseUrl: "default.url",
+    myLogger: {
+      allowedMethod: ["POST"],
+    },
   };
 
   return {
