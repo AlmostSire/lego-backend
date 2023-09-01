@@ -7,7 +7,6 @@ export default class TestController extends Controller {
     const { id } = ctx.params;
     const { baseUrl } = app.config;
     const users = await service.dog.showPlayers();
-    console.log("users", users);
     const res = {
       query,
       id,

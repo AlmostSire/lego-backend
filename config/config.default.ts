@@ -27,7 +27,7 @@ export default (appInfo: EggAppInfo) => {
   };
 
   config.mongoose = {
-    url: "mongodb://localhost:27017/hello",
+    url: "mongodb://localhost:27017/lego",
   };
 
   // 业务逻辑配置信息
@@ -36,9 +36,6 @@ export default (appInfo: EggAppInfo) => {
     myLogger: {
       allowedMethod: ["POST"],
     },
-    // mongoose: {
-    //   url: "mongodb://localhost:27017/hello",
-    // },
   };
 
   return {

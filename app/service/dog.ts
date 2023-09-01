@@ -6,6 +6,9 @@ interface DogResp {
 }
 
 class DogService extends Service {
+  showPlayers() {
+    return this.app.model.User.find().exec();
+  }
   async show() {
     const resp = await this.ctx.curl<DogResp>(
       "https://dog.ceo/api/breeds/image/random",
@@ -14,10 +17,6 @@ class DogService extends Service {
       }
     );
     return resp.data;
-  }
-
-  showPlayers() {
-    return this.app.model.User.find({ age: { $lt: 30 } }).exec();
   }
 }
 

@@ -9,10 +9,10 @@ const plugin: EggPlugin = {
     enable: true,
     package: "egg-mongoose",
   },
-  // validate: {
-  //   enable: true,
-  //   package: "egg-validate",
-  // },
+  validate: {
+    enable: true,
+    package: "egg-validate",
+  },
   // bcrypt: {
   //   enable: true,
   //   package: "egg-bcrypt",
