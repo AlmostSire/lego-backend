@@ -11,11 +11,11 @@
     "axios": "^1.4.0",
     "egg": "^3",
     "egg-bcrypt": "^1.1.0",
-    "egg-mongoose": "^3.3.1",
+    "egg-mongoose": "^4.0.0",
     "egg-scripts": "^2",
     "egg-validate": "^2.0.2",
     "egg-view-nunjucks": "^2.3.0",
-    "mongoose": "^5.13.19",
+    "mongoose": "^7.5.0",
     "mongoose-sequence": "^5.3.1"
   },
   "devDependencies": {

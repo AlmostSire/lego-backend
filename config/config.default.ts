@@ -26,12 +26,19 @@ export default (appInfo: EggAppInfo) => {
     consoleLevel: "DEBUG",
   };
 
+  config.mongoose = {
+    url: "mongodb://localhost:27017/hello",
+  };
+
   // 业务逻辑配置信息
   const bizConfig = {
     baseUrl: "default.url",
     myLogger: {
       allowedMethod: ["POST"],
     },
+    // mongoose: {
+    //   url: "mongodb://localhost:27017/hello",
+    // },
   };
 
   return {

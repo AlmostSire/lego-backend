@@ -15,6 +15,10 @@ class DogService extends Service {
     );
     return resp.data;
   }
+
+  showPlayers() {
+    return this.app.model.User.find({ age: { $lt: 30 } }).exec();
+  }
 }
 
 export default DogService;

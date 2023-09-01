@@ -11,3 +11,11 @@ Mon Aug 28 2023 09:34:38 GMT+0800 (中国标准时间) -- GET -- /dog -- 1098ms
 Mon Aug 28 2023 09:57:10 GMT+0800 (中国标准时间) -- GET -- /dog -- 884ms
 Mon Aug 28 2023 10:50:07 GMT+0800 (中国标准时间) -- GET -- /dog -- 1894ms
 Mon Aug 28 2023 13:48:02 GMT+0800 (中国标准时间) -- POST -- /test/2?name=wangqun&age=20 -- 1573ms
+Fri Sep 01 2023 10:49:13 GMT+0800 (中国标准时间) -- POST -- /test/2?name=wangqun&age=20 -- 812ms
+Fri Sep 01 2023 10:50:30 GMT+0800 (中国标准时间) -- GET -- /dog -- 634ms
+Fri Sep 01 2023 10:51:32 GMT+0800 (中国标准时间) -- GET -- /dog -- 1251ms
+Fri Sep 01 2023 10:53:34 GMT+0800 (中国标准时间) -- POST -- /test/2?name=wangqun&age=20 -- 965ms
+Fri Sep 01 2023 10:55:05 GMT+0800 (中国标准时间) -- POST -- /test/2?name=wangqun&age=20 -- 729ms
+Fri Sep 01 2023 10:55:35 GMT+0800 (中国标准时间) -- POST -- /test/2?name=wangqun&age=20 -- 801ms
+Fri Sep 01 2023 10:56:06 GMT+0800 (中国标准时间) -- GET -- /dog -- 650ms
+Fri Sep 01 2023 10:57:01 GMT+0800 (中国标准时间) -- GET -- /dog -- 706ms

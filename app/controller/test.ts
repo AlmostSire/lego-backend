@@ -2,21 +2,18 @@ import { Controller } from "egg";
 
 export default class TestController extends Controller {
   async index() {
-    const { ctx, app } = this;
+    const { ctx, app, service } = this;
     const { query, body } = ctx.request;
     const { id } = ctx.params;
     const { baseUrl } = app.config;
-    const resp = await app.axiosInstance.get("/api/breeds/image/random");
-    // None Debug Info Warnnig Error
-    ctx.logger.debug("debug info");
-    ctx.logger.info("res data", resp.data);
-    ctx.logger.warn("warnning");
-    ctx.logger.error(new Error("whoops"));
+    const users = await service.dog.showPlayers();
+    console.log("users", users);
     const res = {
       query,
       id,
       body,
       baseUrl,
+      users,
     };
     ctx.helper.success({ ctx, res });
   }

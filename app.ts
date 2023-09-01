@@ -1,11 +1,19 @@
 import { Application, IBoot } from "egg";
-//import assert from "assert";
+// import assert from "assert";
+// import { createConnection } from "mongoose";
 // import { join } from "path";
 
 export default class AppBoot implements IBoot {
   private readonly app: Application;
   constructor(app: Application) {
     this.app = app;
+    // const { url } = this.app.config.mongoose;
+    // assert(url, "[egg-mongoose] url is required on config");
+    // const db = createConnection(url);
+    // db.on("connected", () => {
+    //   app.logger.info(`[egg-mongoose] ${url} connected successful`);
+    // });
+    // app.mongoose = db;
   }
   configWillLoad() {
     // 此时 config 文件已被读取合并，但并未生效
@@ -17,6 +25,10 @@ export default class AppBoot implements IBoot {
 
   async willReady() {
     console.log("enable willReady", this.app.config.coreMiddleware);
+    // const dir = join(this.app.config.baseDir, "app/model");
+    // this.app.loader.loadToApp(dir, "model", {
+    //   caseStyle: "upper",
+    // });
   }
 
   async didReady() {
