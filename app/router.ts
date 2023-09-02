@@ -5,4 +5,5 @@ export default (app: Application) => {
 
   router.post("/api/users/create", controller.user.createByEmail);
   router.get("/api/users/:id", controller.user.getUserInfo);
+  router.post("/api/users/loginByEmail", controller.user.loginByEmail);
 };

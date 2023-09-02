@@ -1,5 +1,9 @@
 import { Application } from "egg";
 import { Schema } from "mongoose";
+//import SequenceFactory from "mongoose-sequence";
+
+const SequenceFactory = require("mongoose-sequence");
+
 export interface UserProps {
   username: string;
   password: string;
@@ -12,6 +16,7 @@ export interface UserProps {
 }
 
 function initUserModel(app: Application) {
+  const AutoIncrement = SequenceFactory(app.mongoose);
   const UserSchema = new Schema<UserProps>(
     {
       username: { type: String, unique: true, required: true },
@@ -23,8 +28,17 @@ function initUserModel(app: Application) {
     },
     {
       timestamps: true,
+      toJSON: {
+        // document 转换普通对象，过滤掉敏感信息或者冗余字段
+        transform: (_doc, ret) => {
+          delete ret.password;
+          delete ret.__v;
+        },
+      },
     }
   );
+
+  UserSchema.plugin(AutoIncrement, { inc_field: "id", id: "user_id_counter" });
 
   return app.mongoose.model<UserProps>("User", UserSchema);
 }
