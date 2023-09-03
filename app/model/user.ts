@@ -1,8 +1,6 @@
 import { Application } from "egg";
 import { Schema } from "mongoose";
-//import SequenceFactory from "mongoose-sequence";
-
-const SequenceFactory = require("mongoose-sequence");
+import SequenceFactory from "mongoose-sequence";
 
 export interface UserProps {
   username: string;
@@ -38,7 +36,7 @@ function initUserModel(app: Application) {
     }
   );
 
-  UserSchema.plugin(AutoIncrement, { inc_field: "id", id: "user_id_counter" });
+  UserSchema.plugin(AutoIncrement, { inc_field: "id", id: "users_id_counter" });
 
   return app.mongoose.model<UserProps>("User", UserSchema);
 }
