@@ -15,13 +15,18 @@ export const userErrorMessages = {
   },
   // 创建用户，写入数据库，失败
   createUserAlreadyExits: {
-    errno: 101001,
+    errno: 101002,
     message: "该邮箱已被注册，请直接登录",
   },
   // 用户不存在或者密码错误
   loginCheckFailInfo: {
-    errno: 101002,
+    errno: 101003,
     message: "该用户不存在或者密码错误",
+  },
+  // 登录校验失败
+  loginValidateFail: {
+    errno: 101004,
+    message: "登录校验失败",
   },
 };
 
@@ -50,7 +55,7 @@ export default class UserController extends Controller {
   }
 
   async loginByEmail() {
-    const { ctx, service } = this;
+    const { ctx, service, app } = this;
     // 检查用户输入
     const error = this.validateInput();
     if (error) {
@@ -75,13 +80,19 @@ export default class UserController extends Controller {
     // ctx.cookies.set("username", username, { encrypt: true });
 
     // 设置 session
-    ctx.session.username = user.username;
+    // ctx.session.username = user.username;
 
-    return ctx.helper.success({ ctx, res: user.toJSON(), msg: "登录成功" });
+    // Registered claims 注册相关信息
+    // Public claims 公共信息：should be unique like email, address or phone_number
+    const token = app.jwt.sign({ username: user.username }, app.config.secret, {
+      expiresIn: 60 * 60,
+    });
+
+    return ctx.helper.success({ ctx, res: { token }, msg: "登录成功" });
   }
 
   async getUserInfo() {
-    const { ctx } = this;
+    const { ctx, service } = this;
     // // 获取用户信息
     // const userData = await service.user.findById(ctx.params.id);
 
@@ -89,10 +100,9 @@ export default class UserController extends Controller {
     // const username = ctx.cookies.get("username", { encrypt: true });
 
     // 获取 session
-    const { username } = ctx.session;
-    if (!username) {
-      return ctx.helper.error({ ctx, type: "loginCheckFailInfo" });
-    }
-    ctx.helper.success({ ctx, res: username });
+    // const { username } = ctx.session;
+
+    const user = await service.user.findByUsername(ctx.state.user.username);
+    ctx.helper.success({ ctx, res: user });
   }
 }
