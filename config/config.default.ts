@@ -44,6 +44,11 @@ export default (appInfo: EggAppInfo) => {
     },
   };
 
+  // 临时关闭 session 加密
+  config.session = {
+    encrypt: false,
+  };
+
   return {
     ...(config as {}),
     ...bizConfig,

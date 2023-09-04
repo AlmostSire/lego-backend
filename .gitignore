@@ -11,8 +11,12 @@ run/
 .DS_Store
 *.sw*
 *.un~
-typings/
+
 .nyc_output/
+
+typings/app
+typings/config
+
 
 app/**/*.js
 config/**/*.js 

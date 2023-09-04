@@ -71,12 +71,28 @@ export default class UserController extends Controller {
       return ctx.helper.error({ ctx, type: "loginCheckFailInfo" });
     }
 
+    // // 设置 cookie
+    // ctx.cookies.set("username", username, { encrypt: true });
+
+    // 设置 session
+    ctx.session.username = user.username;
+
     return ctx.helper.success({ ctx, res: user.toJSON(), msg: "登录成功" });
   }
 
   async getUserInfo() {
-    const { ctx, service } = this;
-    const userData = await service.user.findById(ctx.params.id);
-    ctx.helper.success({ ctx, res: userData });
+    const { ctx } = this;
+    // // 获取用户信息
+    // const userData = await service.user.findById(ctx.params.id);
+
+    // // 获取 cookie
+    // const username = ctx.cookies.get("username", { encrypt: true });
+
+    // 获取 session
+    const { username } = ctx.session;
+    if (!username) {
+      return ctx.helper.error({ ctx, type: "loginCheckFailInfo" });
+    }
+    ctx.helper.success({ ctx, res: username });
   }
 }
