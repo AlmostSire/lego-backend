@@ -17,7 +17,7 @@ run/
 typings/app
 typings/config
 
-
+.env
 app/**/*.js
 config/**/*.js 
 test/**/*.js 

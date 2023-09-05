@@ -1,11 +1,28 @@
 import { Controller } from "egg";
 
-const userCreateRule = {
+const userCreateRules = {
   username: "email",
   password: {
     type: "password",
     min: 8,
   },
+};
+
+const sendCodeRules = {
+  phoneNumber: {
+    type: "string",
+    format: /^1[3-9]\d{9}$/,
+    message: "手机号码格式错误",
+  },
+};
+
+const userCreateRulesByPhone = {
+  phoneNumber: {
+    type: "string",
+    format: /^1[3-9]\d{9}$/,
+    message: "手机号码格式错误",
+  },
+  veriCode: { type: "string", format: /^\d{4}$/, message: "验证码格式错误" },
 };
 
 export const userErrorMessages = {
@@ -28,12 +45,80 @@ export const userErrorMessages = {
     errno: 101004,
     message: "登录校验失败",
   },
+  // 发送短信验证码过于频繁
+  sendVeriCodeFrequentlyFailInfo: {
+    errno: 101005,
+    message: "请勿频繁获取短信验证码",
+  },
+  // 登录时，验证码不正确
+  loginVeriCodeIncorrectFailInfo: {
+    errno: 101006,
+    message: "验证码不正确",
+  },
+  // 验证码发送失败
+  sendVeriCodeError: {
+    errno: 101007,
+    message: "验证码发送失败",
+  },
 };
 
 export default class UserController extends Controller {
+  async sendVericode() {
+    const { ctx, app, service } = this;
+    const { phoneNumber } = ctx.request.body;
+    // 检查用户输入
+    const error = this.validateInput(sendCodeRules);
+    if (error) {
+      return ctx.helper.error({ ctx, type: "userValidateFail", error });
+    }
+    // 获取 redis 数据
+    // phoneVeriCode-1331111222
+    const preVeriCode = await app.redis.get(`phoneVeriCode-${phoneNumber}`);
+    // 判断是否存在
+    if (preVeriCode) {
+      return ctx.helper.error({ ctx, type: "sendVeriCodeFrequentlyFailInfo" });
+    }
+
+    // 发送短信验证码
+    // 判断运行环境
+    const veriCode = Math.floor(Math.random() * 9000 + 1000).toString();
+    if (app.config.env === "prod") {
+      const resp = await service.user.sendSMS(phoneNumber, veriCode);
+      if (resp.body.code !== "OK") {
+        return ctx.helper.error({ ctx, type: "sendVeriCodeError" });
+      }
+    }
+
+    await app.redis.set(`phoneVeriCode-${phoneNumber}`, veriCode, "ex", 60);
+    ctx.helper.success({
+      ctx,
+      msg: "验证码发送成功",
+      res: app.config.env === "local" ? { veriCode } : null,
+    });
+  }
+
+  async loginByCellphone() {
+    const { ctx, app, service } = this;
+    const { phoneNumber, veriCode } = ctx.request.body;
+    // 检查用户输入
+    const error = this.validateInput(userCreateRulesByPhone);
+    if (error) {
+      return ctx.helper.error({ ctx, type: "userValidateFail", error });
+    }
+
+    // 验证码是否正确
+    const preVeriCode = await app.redis.get(`phoneVeriCode-${phoneNumber}`);
+    if (preVeriCode !== veriCode) {
+      return ctx.helper.error({ ctx, type: "loginVeriCodeIncorrectFailInfo" });
+    }
+
+    const token = await service.user.loginByCellphone(phoneNumber);
+    ctx.helper.success({ ctx, res: { token }, msg: "登录成功" });
+  }
+
   async createByEmail() {
     const { ctx, service } = this;
-    const error = this.validateInput();
+    const error = this.validateInput(userCreateRules);
     if (error) {
       return ctx.helper.error({ ctx, type: "userValidateFail", error });
     }
@@ -43,13 +128,12 @@ export default class UserController extends Controller {
       return ctx.helper.error({ ctx, type: "createUserAlreadyExits", error });
     }
     const userData = await service.user.createByEmail(ctx.request.body);
-    console.log(userData, "userData");
     ctx.helper.success({ ctx, res: userData });
   }
 
-  validateInput() {
+  validateInput(rules: any) {
     const { ctx, app, logger } = this;
-    const error = app.validator.validate(userCreateRule, ctx.request.body);
+    const error = app.validator.validate(rules, ctx.request.body);
     logger.warn(error);
     return error;
   }
@@ -57,7 +141,7 @@ export default class UserController extends Controller {
   async loginByEmail() {
     const { ctx, service, app } = this;
     // 检查用户输入
-    const error = this.validateInput();
+    const error = this.validateInput(userCreateRules);
     if (error) {
       return ctx.helper.error({ ctx, type: "userValidateFail", error });
     }
@@ -71,7 +155,7 @@ export default class UserController extends Controller {
       return ctx.helper.error({ ctx, type: "loginCheckFailInfo" });
     }
     // 验证密码是否成功
-    const verifyPwd = await ctx.compare(password, user.password);
+    const verifyPwd = await ctx.compare(password, user.password as string);
     if (!verifyPwd) {
       return ctx.helper.error({ ctx, type: "loginCheckFailInfo" });
     }

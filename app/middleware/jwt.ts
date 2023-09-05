@@ -1,5 +1,5 @@
 import { Context, EggAppConfig } from "egg";
-import { verify } from "jsonwebtoken";
+// import { verify } from "jsonwebtoken";
 
 const getTokenValue = (ctx: Context) => {
   // JWT Header 格式
@@ -35,8 +35,8 @@ export default (options: EggAppConfig["jwt"]) => {
     }
 
     try {
-      const decoded = verify(token, secret);
-      ctx.state.user = decoded;
+      // const decoded = verify(token, secret);
+      // ctx.state.user = decoded;
       await next();
     } catch (error) {
       return ctx.helper.error({ ctx, type: "loginValidateFail" });

@@ -8,7 +8,10 @@
     "typescript": true
   },
   "dependencies": {
+    "@alicloud/dysmsapi20170525": "^2.0.24",
+    "@alicloud/openapi-client": "^0.4.6",
     "axios": "^1.4.0",
+    "dotenv": "^16.3.1",
     "egg": "^3",
     "egg-bcrypt": "^1.1.0",
     "egg-jwt": "^3.1.7",
@@ -17,13 +20,11 @@
     "egg-scripts": "^2",
     "egg-validate": "^2.0.2",
     "egg-view-nunjucks": "^2.3.0",
-    "jsonwebtoken": "^9.0.2",
     "mongoose": "^5.8.3",
     "mongoose-sequence": "^5.3.1"
   },
   "devDependencies": {
     "@eggjs/tsconfig": "^1.1.0",
-    "@types/jsonwebtoken": "^9.0.2",
     "egg-bin": "^5",
     "egg-ci": "^2",
     "egg-mock": "^5",

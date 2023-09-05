@@ -1,4 +1,7 @@
 import { EggAppConfig, EggAppInfo, PowerPartial } from "egg";
+import { config } from "dotenv";
+
+config();
 
 export default (appInfo: EggAppInfo) => {
   const config: PowerPartial<EggAppConfig> = {};
@@ -41,17 +44,34 @@ export default (appInfo: EggAppInfo) => {
     url: "mongodb://localhost:27017/lego",
   };
 
-  // 业务逻辑配置信息
-  const bizConfig = {
-    baseUrl: "default.url",
-    myLogger: {
-      allowedMethod: ["POST"],
+  // 设置 redis 配置
+  config.redis = {
+    client: {
+      port: 6379,
+      host: "127.0.0.1",
+      password: "",
+      db: 0,
     },
   };
 
   // 临时关闭 session 加密
   config.session = {
     encrypt: false,
+  };
+
+  const aliCloudConfig = {
+    accessKeyId: process.env.ALC_ACCESS_KEY_ID,
+    accessKeySecret: process.env.ALC_ACCESS_KEY_SECRET,
+    endpoint: "dysmsapi.aliyuncs.com",
+  };
+
+  // 业务逻辑配置信息
+  const bizConfig = {
+    baseUrl: "default.url",
+    myLogger: {
+      allowedMethod: ["POST"],
+    },
+    aliCloudConfig,
   };
 
   return {
