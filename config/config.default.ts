@@ -59,10 +59,23 @@ export default (appInfo: EggAppInfo) => {
     encrypt: false,
   };
 
+  config.cors = {
+    origin: "http://localhost:8080",
+    allowMethods: "GET,HEAD,PUT,OPTIONS,POST,DELETE,PATCH",
+  };
+
   const aliCloudConfig = {
     accessKeyId: process.env.ALC_ACCESS_KEY_ID,
     accessKeySecret: process.env.ALC_ACCESS_KEY_SECRET,
     endpoint: "dysmsapi.aliyuncs.com",
+  };
+
+  const giteeOauthConfig = {
+    cid: process.env.GITEE_CID,
+    secret: process.env.GITEE_SECRET,
+    redirectURL: "http://localhost:7001/api/users/passport/gitee/callback",
+    authURL: "https://gitee.com/oauth/token?grant_type=authorization_code",
+    giteeUserAPI: "https://gitee.com/api/v5/user",
   };
 
   // 业务逻辑配置信息
@@ -72,6 +85,7 @@ export default (appInfo: EggAppInfo) => {
       allowedMethod: ["POST"],
     },
     aliCloudConfig,
+    giteeOauthConfig,
   };
 
   return {

@@ -60,6 +60,10 @@ export const userErrorMessages = {
     errno: 101007,
     message: "验证码发送失败",
   },
+  giteeOauthError: {
+    errno: 101008,
+    message: "gitee 授权出错",
+  },
 };
 
 export default class UserController extends Controller {
@@ -188,5 +192,24 @@ export default class UserController extends Controller {
 
     const user = await service.user.findByUsername(ctx.state.user.username);
     ctx.helper.success({ ctx, res: user });
+  }
+
+  async oauth() {
+    const { app, ctx } = this;
+    const { cid, redirectURL } = app.config.giteeOauthConfig;
+    ctx.redirect(
+      `https://gitee.com/oauth/authorize?client_id=${cid}&redirect_uri=${redirectURL}&response_type=code`
+    );
+  }
+
+  async oauthByGitee() {
+    const { ctx, service } = this;
+    const { code } = ctx.request.query;
+    try {
+      const token = await service.user.loginByGitee(code);
+      await ctx.render("success.nj", { token });
+    } catch (error) {
+      ctx.helper.error({ ctx, type: "giteeOauthError" });
+    }
   }
 }
