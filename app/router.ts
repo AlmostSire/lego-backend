@@ -13,4 +13,21 @@ export default (app: Application) => {
     "/api/users/passport/gitee/callback",
     controller.user.oauthByGitee
   );
+
+  router.post("/api/works", app.jwt as any, controller.work.createWork);
+  router.get("/api/works", app.jwt as any, controller.work.myList);
+  router.patch("/api/works/:id", app.jwt as any, controller.work.update);
+  router.delete("/api/works/:id", app.jwt as any, controller.work.delete);
+  router.post(
+    "/api/works/publish/:id",
+    app.jwt as any,
+    controller.work.publishWork
+  );
+
+  router.get("/api/templates", controller.work.templateList);
+  router.post(
+    "/api/templates/publish/:id",
+    app.jwt as any,
+    controller.work.publishTemplate
+  );
 };

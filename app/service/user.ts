@@ -45,7 +45,10 @@ export default class UserService extends Service {
       };
       user = await ctx.model.User.create(userCreateData);
     }
-    return app.jwt.sign({ username: user.username }, app.config.jwt.secret);
+    return app.jwt.sign(
+      { username: user.username, _id: user._id },
+      app.config.jwt.secret
+    );
   }
 
   async sendSMS(phoneNumber: string, veriCode: string) {
@@ -120,6 +123,9 @@ export default class UserService extends Service {
       user = await ctx.model.User.create(userCreateData);
     }
     // 生成 token 返回
-    return app.jwt.sign({ username: user.username }, app.config.jwt.secret);
+    return app.jwt.sign(
+      { username: user.username, _id: user._id },
+      app.config.jwt.secret
+    );
   }
 }

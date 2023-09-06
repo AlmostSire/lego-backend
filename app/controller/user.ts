@@ -1,4 +1,5 @@
 import { Controller } from "egg";
+import validateInput from "../decorator/inputValidate";
 
 const userCreateRules = {
   username: "email",
@@ -67,14 +68,11 @@ export const userErrorMessages = {
 };
 
 export default class UserController extends Controller {
+  @validateInput(sendCodeRules, "userValidateFail")
   async sendVericode() {
     const { ctx, app, service } = this;
     const { phoneNumber } = ctx.request.body;
-    // 检查用户输入
-    const error = this.validateInput(sendCodeRules);
-    if (error) {
-      return ctx.helper.error({ ctx, type: "userValidateFail", error });
-    }
+
     // 获取 redis 数据
     // phoneVeriCode-1331111222
     const preVeriCode = await app.redis.get(`phoneVeriCode-${phoneNumber}`);
@@ -100,15 +98,10 @@ export default class UserController extends Controller {
       res: app.config.env === "local" ? { veriCode } : null,
     });
   }
-
+  @validateInput(userCreateRulesByPhone, "userValidateFail")
   async loginByCellphone() {
     const { ctx, app, service } = this;
     const { phoneNumber, veriCode } = ctx.request.body;
-    // 检查用户输入
-    const error = this.validateInput(userCreateRulesByPhone);
-    if (error) {
-      return ctx.helper.error({ ctx, type: "userValidateFail", error });
-    }
 
     // 验证码是否正确
     const preVeriCode = await app.redis.get(`phoneVeriCode-${phoneNumber}`);
@@ -119,36 +112,22 @@ export default class UserController extends Controller {
     const token = await service.user.loginByCellphone(phoneNumber);
     ctx.helper.success({ ctx, res: { token }, msg: "登录成功" });
   }
-
+  @validateInput(userCreateRules, "userValidateFail")
   async createByEmail() {
     const { ctx, service } = this;
-    const error = this.validateInput(userCreateRules);
-    if (error) {
-      return ctx.helper.error({ ctx, type: "userValidateFail", error });
-    }
+
     const { username } = ctx.request.body;
     const user = await service.user.findByUsername(username);
     if (user) {
-      return ctx.helper.error({ ctx, type: "createUserAlreadyExits", error });
+      return ctx.helper.error({ ctx, type: "createUserAlreadyExits" });
     }
     const userData = await service.user.createByEmail(ctx.request.body);
     ctx.helper.success({ ctx, res: userData });
   }
 
-  validateInput(rules: any) {
-    const { ctx, app, logger } = this;
-    const error = app.validator.validate(rules, ctx.request.body);
-    logger.warn(error);
-    return error;
-  }
-
+  @validateInput(userCreateRules, "loginValidateFail")
   async loginByEmail() {
     const { ctx, service, app } = this;
-    // 检查用户输入
-    const error = this.validateInput(userCreateRules);
-    if (error) {
-      return ctx.helper.error({ ctx, type: "userValidateFail", error });
-    }
 
     // 根据 username 取得用户信息
     const { username, password } = ctx.request.body;
@@ -172,9 +151,13 @@ export default class UserController extends Controller {
 
     // Registered claims 注册相关信息
     // Public claims 公共信息：should be unique like email, address or phone_number
-    const token = app.jwt.sign({ username: user.username }, app.config.secret, {
-      expiresIn: 60 * 60,
-    });
+    const token = app.jwt.sign(
+      { username: user.username, _id: user._id },
+      app.config.secret,
+      {
+        expiresIn: 60 * 60 * 6,
+      }
+    );
 
     return ctx.helper.success({ ctx, res: { token }, msg: "登录成功" });
   }

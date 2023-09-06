@@ -59,6 +59,7 @@ export default (appInfo: EggAppInfo) => {
     encrypt: false,
   };
 
+  // 设置跨域
   config.cors = {
     origin: "http://localhost:8080",
     allowMethods: "GET,HEAD,PUT,OPTIONS,POST,DELETE,PATCH",
@@ -86,6 +87,7 @@ export default (appInfo: EggAppInfo) => {
     },
     aliCloudConfig,
     giteeOauthConfig,
+    H5BaseURL: "http://localhost:7001/api/pages",
   };
 
   return {
