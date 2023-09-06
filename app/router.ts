@@ -30,4 +30,6 @@ export default (app: Application) => {
     app.jwt as any,
     controller.work.publishTemplate
   );
+
+  router.post("/api/utils/upload", controller.utils.fileLocalUpload);
 };

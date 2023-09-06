@@ -1,5 +1,6 @@
 import { EggAppConfig, EggAppInfo, PowerPartial } from "egg";
 import { config } from "dotenv";
+import { join } from "path";
 
 config();
 
@@ -63,6 +64,19 @@ export default (appInfo: EggAppInfo) => {
   config.cors = {
     origin: "http://localhost:8080",
     allowMethods: "GET,HEAD,PUT,OPTIONS,POST,DELETE,PATCH",
+  };
+
+  // 设置文件上传配置
+  config.multipart = {
+    mode: "file",
+    tmpdir: join(appInfo.baseDir, "uploads"),
+  };
+
+  config.static = {
+    dir: [
+      { prefix: "/public", dir: join(appInfo.baseDir, "app/public") },
+      { prefix: "/uploads", dir: join(appInfo.baseDir, "uploads") },
+    ],
   };
 
   const aliCloudConfig = {
