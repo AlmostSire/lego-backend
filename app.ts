@@ -25,6 +25,7 @@ export default class AppBoot implements IBoot {
     // 这是应用层修改配置的最后时机
     console.log("config", this.app.config.baseUrl);
     console.log("enable middleware", this.app.config.coreMiddleware);
+    this.app.config.coreMiddleware.push("customError");
   }
 
   async willReady() {

@@ -11,7 +11,7 @@ export default (appInfo: EggAppInfo) => {
   config.keys = appInfo.name + "_1686654480493_3280";
 
   // add your middleware config here
-  config.middleware = ["customError"];
+  // config.middleware = ["customError"];
 
   // 本地开发关闭 csrf 限制
   config.security = {
@@ -37,7 +37,9 @@ export default (appInfo: EggAppInfo) => {
 
   // 设置 jwt 配置
   config.jwt = {
-    secret: "1234567890",
+    secret: process.env.JWT_SECRET,
+    enable: true,
+    match: ["/api/users/info", "/api/works", "/api/utils/upload"],
   };
 
   // 设置mongodb地址等
@@ -67,16 +69,27 @@ export default (appInfo: EggAppInfo) => {
   };
 
   // 设置文件上传配置
-  // config.multipart = {
-  //   mode: "file",
-  //   tmpdir: join(appInfo.baseDir, "uploads"),
-  // };
+  config.multipart = {
+    // mode: "file",
+    // tmpdir: join(appInfo.baseDir, "uploads"),
+    whitelist: [".png", ".jpg", "gif", ".webp"],
+    fileSize: "100kb",
+  };
 
   config.static = {
     dir: [
       { prefix: "/public", dir: join(appInfo.baseDir, "app/public") },
       { prefix: "/uploads", dir: join(appInfo.baseDir, "uploads") },
     ],
+  };
+
+  config.oss = {
+    client: {
+      accessKeyId: process.env.ALC_ACCESS_KEY_ID,
+      accessKeySecret: process.env.ALC_ACCESS_KEY_SECRET,
+      bucket: "almost-backend",
+      endpoint: "oss-cn-shanghai.aliyuncs.com",
+    },
   };
 
   const aliCloudConfig = {

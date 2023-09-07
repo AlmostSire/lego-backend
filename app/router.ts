@@ -3,33 +3,32 @@ import { Application } from "egg";
 export default (app: Application) => {
   const { router, controller } = app;
 
-  router.post("/api/users/create", controller.user.createByEmail);
-  router.get("/api/users/:id", app.jwt as any, controller.user.getUserInfo);
-  router.post("/api/users/loginByEmail", controller.user.loginByEmail);
-  router.post("/api/users/genVeriCode", controller.user.sendVericode);
-  router.post("/api/users/loginByCellphone", controller.user.loginByCellphone);
-  router.get("/api/users/passport/gitee", controller.user.oauth);
-  router.get(
-    "/api/users/passport/gitee/callback",
-    controller.user.oauthByGitee
-  );
+  router.prefix("/api");
 
-  router.post("/api/works", app.jwt as any, controller.work.createWork);
-  router.get("/api/works", app.jwt as any, controller.work.myList);
-  router.patch("/api/works/:id", app.jwt as any, controller.work.update);
-  router.delete("/api/works/:id", app.jwt as any, controller.work.delete);
+  router.post("/users/create", controller.user.createByEmail);
+  router.get("/users/info", controller.user.getUserInfo);
+  router.post("/users/loginByEmail", controller.user.loginByEmail);
+  router.post("/users/genVeriCode", controller.user.sendVericode);
+  router.post("/users/loginByCellphone", controller.user.loginByCellphone);
+  router.get("/users/passport/gitee", controller.user.oauth);
+  router.get("/users/passport/gitee/callback", controller.user.oauthByGitee);
+
+  router.post("/works", app.jwt as any, controller.work.createWork);
+  router.get("/works", app.jwt as any, controller.work.myList);
+  router.patch("/works/:id", app.jwt as any, controller.work.update);
+  router.delete("/works/:id", app.jwt as any, controller.work.delete);
   router.post(
-    "/api/works/publish/:id",
+    "/works/publish/:id",
     app.jwt as any,
     controller.work.publishWork
   );
 
-  router.get("/api/templates", controller.work.templateList);
+  router.get("/templates", controller.work.templateList);
   router.post(
-    "/api/templates/publish/:id",
+    "/templates/publish/:id",
     app.jwt as any,
     controller.work.publishTemplate
   );
 
-  router.post("/api/utils/upload", controller.utils.fileUploadByStream);
+  router.post("/utils/upload", controller.utils.uploadMutipleFiles);
 };

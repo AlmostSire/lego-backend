@@ -153,11 +153,13 @@ export default class UserController extends Controller {
     // Public claims 公共信息：should be unique like email, address or phone_number
     const token = app.jwt.sign(
       { username: user.username, _id: user._id },
-      app.config.secret,
+      app.config.jwt.secret,
       {
-        expiresIn: 60 * 60 * 6,
+        expiresIn: 60000,
       }
     );
+
+    console.log(app.jwt.verify(token, app.config.secret));
 
     return ctx.helper.success({ ctx, res: { token }, msg: "登录成功" });
   }

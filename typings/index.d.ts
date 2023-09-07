@@ -1,5 +1,10 @@
+import { Model } from "mongoose";
+import { ClientOptions } from "oss-client";
+
 declare module "egg" {
-  interface MongooseModels extends IModel {}
+  interface MongooseModels extends IModel {
+    [key: string]: Model<any>;
+  }
 
   interface Context {
     genHash(plainText: stirng): Promise<string>;
@@ -9,6 +14,9 @@ declare module "egg" {
   interface EggAppConfig {
     bcrypt: {
       saltRounds: number;
+    };
+    oss: {
+      client: ClientOptions;
     };
   }
 
