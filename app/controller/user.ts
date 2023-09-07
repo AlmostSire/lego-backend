@@ -155,7 +155,7 @@ export default class UserController extends Controller {
       { username: user.username, _id: user._id },
       app.config.jwt.secret,
       {
-        expiresIn: 60000,
+        expiresIn: 60 * 60 * 6, // 六小时
       }
     );
 

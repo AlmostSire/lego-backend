@@ -13,22 +13,16 @@ export default (app: Application) => {
   router.get("/users/passport/gitee", controller.user.oauth);
   router.get("/users/passport/gitee/callback", controller.user.oauthByGitee);
 
-  router.post("/works", app.jwt as any, controller.work.createWork);
-  router.get("/works", app.jwt as any, controller.work.myList);
-  router.patch("/works/:id", app.jwt as any, controller.work.update);
-  router.delete("/works/:id", app.jwt as any, controller.work.delete);
-  router.post(
-    "/works/publish/:id",
-    app.jwt as any,
-    controller.work.publishWork
-  );
+  router.post("/works", controller.work.createWork);
+  router.get("/works", controller.work.myList);
+  router.patch("/works/:id", controller.work.update);
+  router.delete("/works/:id", controller.work.delete);
+  router.post("/works/publish/:id", controller.work.publishWork);
 
   router.get("/templates", controller.work.templateList);
-  router.post(
-    "/templates/publish/:id",
-    app.jwt as any,
-    controller.work.publishTemplate
-  );
+  router.post("/templates/publish/:id", controller.work.publishTemplate);
 
   router.post("/utils/upload", controller.utils.uploadMutipleFiles);
+
+  router.get("/pages/:idAndUuid", controller.utils.renderH5Page);
 };

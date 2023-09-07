@@ -7,7 +7,6 @@ export interface WorkProps {
   title: string;
   author: string;
   user: Types.ObjectId;
-  id?: number;
   desc?: string;
   coverImg?: string;
   content?: { [key: string]: any };

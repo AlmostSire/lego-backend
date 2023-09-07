@@ -8,6 +8,26 @@ import sendToWormhole from "stream-wormhole";
 import busboy from "busboy";
 import { MultipartFileStream } from "egg-multipart";
 export default class UtilsController extends Controller {
+  splitIdAndUuid(str = "") {
+    const result = { id: "", uuid: "" };
+    if (!str) return result;
+    const firstDashIndex = str.indexOf("-");
+    if (firstDashIndex < 0) return result;
+    result.id = str.slice(0, firstDashIndex);
+    result.uuid = str.slice(firstDashIndex + 1);
+    return result;
+  }
+  async renderH5Page() {
+    const { ctx } = this;
+    const { idAndUuid } = ctx.params;
+    const query = this.splitIdAndUuid(idAndUuid);
+    try {
+      const pageData = await this.service.utils.renderToPageData(query);
+      await ctx.render("page.nj", pageData);
+    } catch (e) {
+      ctx.helper.error({ ctx, type: "h5WorkNotExistError" });
+    }
+  }
   async fileLocalUpload() {
     const { ctx, app } = this;
     const { filepath } = ctx.request.files[0];
