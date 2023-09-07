@@ -67,10 +67,10 @@ export default (appInfo: EggAppInfo) => {
   };
 
   // 设置文件上传配置
-  config.multipart = {
-    mode: "file",
-    tmpdir: join(appInfo.baseDir, "uploads"),
-  };
+  // config.multipart = {
+  //   mode: "file",
+  //   tmpdir: join(appInfo.baseDir, "uploads"),
+  // };
 
   config.static = {
     dir: [

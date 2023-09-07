@@ -31,5 +31,5 @@ export default (app: Application) => {
     controller.work.publishTemplate
   );
 
-  router.post("/api/utils/upload", controller.utils.fileLocalUpload);
+  router.post("/api/utils/upload", controller.utils.fileUploadByStream);
 };
