@@ -34,12 +34,19 @@
   "devDependencies": {
     "@eggjs/tsconfig": "^1.1.0",
     "@types/busboy": "^1.5.0",
+    "clean-webpack-plugin": "^4.0.0",
+    "css-loader": "^6.8.1",
     "egg-bin": "^5",
     "egg-ci": "^2",
     "egg-mock": "^5",
     "eslint": "^8",
     "eslint-config-egg": "^12",
-    "typescript": "^4.9.4"
+    "filemanager-webpack-plugin": "^8.0.0",
+    "html-webpack-plugin": "^5.5.3",
+    "mini-css-extract-plugin": "^2.7.6",
+    "typescript": "^4.9.4",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
   },
   "engines": {
     "node": ">=16.0.0"
@@ -54,7 +61,10 @@
     "cov": "egg-bin cov",
     "lint": "eslint .",
     "ci": "npm run lint && npm run cov",
-    "tsc": "ets && tsc -p tsconfig.json"
+    "tsc": "ets && tsc -p tsconfig.json",
+    "build:tpl:dev": "npx webpack --config webpack/webpack.config.js",
+    "build:tpl:prod": "npx webpack --config webpack/webpack.config.js --env production && npm run upload",
+    "upload": "node webpack/uploadToOSS.js"
   },
   "ci": {
     "version": "16, 18",
