@@ -39,7 +39,12 @@ export default (appInfo: EggAppInfo) => {
   config.jwt = {
     secret: process.env.JWT_SECRET,
     enable: true,
-    match: ["/api/users/info", "/api/works", "/api/utils/upload"],
+    match: [
+      "/api/users/info",
+      "/api/works",
+      "/api/utils/upload",
+      "/api/channels",
+    ],
   };
 
   // 设置mongodb地址等

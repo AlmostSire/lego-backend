@@ -1,8 +1,12 @@
 import { Application } from "egg";
 import { Schema, Types } from "mongoose";
 import SequenceFactory from "mongoose-sequence";
-
+export interface ChannelProps {
+  name: string;
+  id: string;
+}
 export interface WorkProps {
+  id: number | string;
   uuid: string;
   title: string;
   author: string;
@@ -16,6 +20,7 @@ export interface WorkProps {
   copiedCount?: number;
   status?: 0 | 1 | 2;
   latestPublishAt?: Date;
+  channels?: ChannelProps[];
 }
 
 function initWorkModel(app: Application) {
@@ -35,6 +40,7 @@ function initWorkModel(app: Application) {
       copiedCount: { type: Number, default: 0 },
       status: { type: Number, default: 1 },
       latestPublishAt: { type: Date },
+      channels: { type: Array },
     },
     {
       timestamps: true,

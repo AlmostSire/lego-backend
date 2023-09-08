@@ -180,8 +180,9 @@ export default class UserController extends Controller {
   }
 
   async oauth() {
-    const { app, ctx } = this;
+    const { ctx, app } = this;
     const { cid, redirectURL } = app.config.giteeOauthConfig;
+
     ctx.redirect(
       `https://gitee.com/oauth/authorize?client_id=${cid}&redirect_uri=${redirectURL}&response_type=code`
     );

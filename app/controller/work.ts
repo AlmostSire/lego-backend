@@ -1,9 +1,15 @@
 import { Controller } from "egg";
 import validateInput from "../decorator/inputValidate";
 import checkPermission from "../decorator/checkPermission";
+import { nanoid } from "nanoid";
 
 const workCreateRules = {
   title: "string",
+};
+
+const channelCreateRules = {
+  name: "string",
+  workId: "number",
 };
 
 export interface IndexCondition {
@@ -16,6 +22,62 @@ export interface IndexCondition {
 }
 
 export default class WorkController extends Controller {
+  @validateInput(channelCreateRules, "channelValidateFail")
+  async createChannel() {
+    const { ctx } = this;
+    const { name, workId } = ctx.request.body;
+    const newChannel = {
+      name,
+      id: nanoid(6),
+    };
+    const work = await ctx.model.Work.findOneAndUpdate(
+      { id: workId },
+      { $push: { channels: newChannel } }
+    );
+    if (!work) {
+      return ctx.helper.error({ ctx, type: "channelOperateFail" });
+    }
+    ctx.helper.success({ ctx, res: newChannel });
+  }
+
+  async getWorkChannels() {
+    const { ctx } = this;
+    const { id } = ctx.params;
+    const work = await ctx.model.Work.findOne({ id }).lean();
+    if (!work) {
+      ctx.helper.error({ ctx, type: "channelOperateFail" });
+    }
+    ctx.helper.success({
+      ctx,
+      res: { count: work?.channels?.length || 0, list: work?.channels || [] },
+    });
+  }
+
+  async updateChannelName() {
+    const { ctx } = this;
+    const { id } = ctx.params;
+    const { name } = ctx.request.body;
+    const work = await ctx.model.Work.findOneAndUpdate(
+      { "channels.id": id },
+      { $set: { "channels.$.name": name } }
+    ).lean();
+    if (!work) {
+      ctx.helper.error({ ctx, type: "channelOperateFail" });
+    }
+    ctx.helper.success({ ctx, res: { id, name } });
+  }
+
+  async deleteChannel() {
+    const { ctx } = this;
+    const { id } = ctx.params;
+    const work = await ctx.model.Work.findOneAndUpdate(
+      { "channels.id": id },
+      { $pull: { channels: { id } } },
+      { new: true }
+    );
+    ctx.helper.success({ ctx, res: work });
+  }
+
   @validateInput(workCreateRules, "workValidateFail")
   async createWork() {
     const { ctx, service } = this;
