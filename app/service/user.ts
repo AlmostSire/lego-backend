@@ -47,7 +47,8 @@ export default class UserService extends Service {
     }
     return app.jwt.sign(
       { username: user.username, _id: user._id },
-      app.config.jwt.secret
+      app.config.jwt.secret,
+      { expiresIn: app.config.jwtExpires }
     );
   }
 
@@ -125,7 +126,8 @@ export default class UserService extends Service {
     // 生成 token 返回
     return app.jwt.sign(
       { username: user.username, _id: user._id },
-      app.config.jwt.secret
+      app.config.jwt.secret,
+      { expiresIn: app.config.jwtExpires }
     );
   }
 }

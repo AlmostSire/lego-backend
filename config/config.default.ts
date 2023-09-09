@@ -18,6 +18,7 @@ export default (appInfo: EggAppInfo) => {
     csrf: {
       enable: false,
     },
+    domainWhiteList: ["http://localhost:8080"],
   };
 
   // 设置模版引擎
@@ -67,12 +68,6 @@ export default (appInfo: EggAppInfo) => {
     encrypt: false,
   };
 
-  // 设置跨域
-  config.cors = {
-    origin: "http://localhost:8080",
-    allowMethods: "GET,HEAD,PUT,OPTIONS,POST,DELETE,PATCH",
-  };
-
   // 设置文件上传配置
   config.multipart = {
     // mode: "file",
@@ -120,6 +115,7 @@ export default (appInfo: EggAppInfo) => {
     aliCloudConfig,
     giteeOauthConfig,
     H5BaseURL: "http://localhost:7001/api/pages",
+    jwtExpires: "1h",
   };
 
   return {

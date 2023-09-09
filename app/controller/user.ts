@@ -154,9 +154,7 @@ export default class UserController extends Controller {
     const token = app.jwt.sign(
       { username: user.username, _id: user._id },
       app.config.jwt.secret,
-      {
-        expiresIn: 60 * 60 * 6, // 六小时
-      }
+      { expiresIn: app.config.jwtExpires }
     );
 
     console.log(app.jwt.verify(token, app.config.secret));
