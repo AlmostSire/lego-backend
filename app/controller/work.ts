@@ -23,6 +23,11 @@ export interface IndexCondition {
 
 export default class WorkController extends Controller {
   @validateInput(channelCreateRules, "channelValidateFail")
+  @checkPermission(
+    { casl: "Channel", mongoose: "Work" },
+    "workNoPermissionFail",
+    { value: { type: "body", valueKey: "workId" } }
+  )
   async createChannel() {
     const { ctx } = this;
     const { name, workId } = ctx.request.body;
@@ -40,6 +45,10 @@ export default class WorkController extends Controller {
     ctx.helper.success({ ctx, res: newChannel });
   }
 
+  @checkPermission(
+    { casl: "Channel", mongoose: "Work" },
+    "workNoPermissionFail"
+  )
   async getWorkChannels() {
     const { ctx } = this;
     const { id } = ctx.params;
@@ -53,6 +62,11 @@ export default class WorkController extends Controller {
     });
   }
 
+  @checkPermission(
+    { casl: "Channel", mongoose: "Work" },
+    "workNoPermissionFail",
+    { key: "channels.id" }
+  )
   async updateChannelName() {
     const { ctx } = this;
     const { id } = ctx.params;
@@ -64,9 +78,14 @@ export default class WorkController extends Controller {
     if (!work) {
       ctx.helper.error({ ctx, type: "channelOperateFail" });
     }
-    ctx.helper.success({ ctx, res: { id, name } });
+    ctx.helper.success({ ctx, res: { name } });
   }
 
+  @checkPermission(
+    { casl: "Channel", mongoose: "Work" },
+    "workNoPermissionFail",
+    { key: "channels.id" }
+  )
   async deleteChannel() {
     const { ctx } = this;
     const { id } = ctx.params;
@@ -79,6 +98,7 @@ export default class WorkController extends Controller {
   }
 
   @validateInput(workCreateRules, "workValidateFail")
+  @checkPermission("Work", "workNoPermissionFail")
   async createWork() {
     const { ctx, service } = this;
     const workData = await service.work.createEmptyWork(ctx.request.body);
@@ -101,6 +121,14 @@ export default class WorkController extends Controller {
       ...(pageSize && { pageSize: parseInt(pageSize) }),
     };
     const res = await ctx.service.work.getList(listCondition);
+    ctx.helper.success({ ctx, res });
+  }
+
+  @checkPermission("Work", "workNoPermissionFail")
+  async getMyWork() {
+    const { ctx } = this;
+    const { id } = ctx.params;
+    const res = await this.ctx.model.Work.findOne({ id }).lean();
     ctx.helper.success({ ctx, res });
   }
 
@@ -130,6 +158,7 @@ export default class WorkController extends Controller {
     }).lean();
     ctx.helper.success({ ctx, res });
   }
+
   @checkPermission("Work", "workNoPermissionFail")
   async delete() {
     const { ctx } = this;
@@ -141,7 +170,7 @@ export default class WorkController extends Controller {
     ctx.helper.success({ ctx, res });
   }
 
-  @checkPermission("Work", "workNoPermissionFail")
+  @checkPermission("Work", "workNoPermissionFail", { action: "publish" })
   async publish(isTemplate: boolean) {
     const { ctx, service } = this;
     const url = await service.work.publish(ctx.params.id, isTemplate);

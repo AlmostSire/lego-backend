@@ -12,6 +12,7 @@ export default function validateInput(rules: any, type: GlobalErrorTypes) {
         const that = this as Controller;
         // @ts-ignore
         const { ctx, app } = that;
+        console.log("我正在验证");
         const error = app.validator.validate(rules, ctx.request.body);
         if (error) {
           ctx.logger.warn(error);

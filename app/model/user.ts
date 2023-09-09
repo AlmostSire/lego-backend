@@ -14,6 +14,7 @@ export interface UserProps {
   type: "email" | "cellphone" | "oauth";
   provider?: "gitee";
   oauthID?: number;
+  role?: "admin" | "normal";
 }
 
 function initUserModel(app: Application) {
@@ -29,6 +30,7 @@ function initUserModel(app: Application) {
       type: { type: String, default: "email" },
       provider: { type: String },
       oauthID: { type: Number },
+      role: { type: String, default: "normal" },
     },
     {
       timestamps: true,
