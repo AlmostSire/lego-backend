@@ -54,14 +54,14 @@ export default (appInfo: EggAppInfo) => {
   };
 
   // 设置 redis 配置
-  config.redis = {
-    client: {
-      port: 6379,
-      host: "127.0.0.1",
-      password: "",
-      db: 0,
-    },
-  };
+  // config.redis = {
+  //   client: {
+  //     port: 6379,
+  //     host: "127.0.0.1",
+  //     password: "",
+  //     db: 0,
+  //   },
+  // };
 
   // 临时关闭 session 加密
   config.session = {

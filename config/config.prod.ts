@@ -24,6 +24,10 @@ export default () => {
   //   },
   // };
 
+  config.mongoose = {
+    url: "mongodb://mongo:27017/lego",
+  };
+
   // 2 配置 cors 允许的域名
   config.security = {
     domainWhiteList: ["https://imooc-lego.com", "https://www.imooc-lego.com"],

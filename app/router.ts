@@ -4,7 +4,7 @@ export default (app: Application) => {
   const { router, controller } = app;
 
   router.prefix("/api");
-
+  router.get("/", controller.test.index);
   router.post("/users/create", controller.user.createByEmail);
   router.get("/users/info", controller.user.getUserInfo);
   router.post("/users/loginByEmail", controller.user.loginByEmail);
