@@ -4,28 +4,22 @@ export default () => {
   const config: PowerPartial<EggAppConfig> = {};
   config.baseUrl = "prod.url";
   // 给 mongoDB 和 redis 添加密码
-  // config.mongoose = {
-  //   client: {
-  //     url: "xxx",
-  //     options: {
-  //       dbName: "lego",
-  //       user: "xyz",
-  //       pass: "pass",
-  //     },
-  //   },
-  // };
 
-  // config.redis = {
-  //   client: {
-  //     port: 6379,
-  //     host: "127.0.0.1",
-  //     password: "",
-  //     db: 0,
-  //   },
-  // };
+  config.redis = {
+    client: {
+      port: 6379,
+      host: "lego-redis",
+      password: process.env.REDIS_PASSWORD,
+    },
+  };
 
   config.mongoose = {
-    url: "mongodb://mongo:27017/lego",
+    url: "mongodb://lego-mongo:27017/lego",
+    options: {
+      user: process.env.MONGO_DB_USERNAME,
+      pass: process.env.MONGO_DB_PASSWORD,
+      useUnifiedTopology: true,
+    },
   };
 
   // 2 配置 cors 允许的域名

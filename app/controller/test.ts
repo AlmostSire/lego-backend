@@ -1,25 +1,23 @@
 import { Controller } from "egg";
+import { version as appVersion } from "../../package.json";
 
 export default class TestController extends Controller {
   async index() {
-    const { ctx, app, service } = this;
-    const { query, body } = ctx.request;
-    const { id } = ctx.params;
-    const { baseUrl } = app.config;
-    const users = await service.dog.show();
-    const res = {
-      query,
-      id,
-      body,
-      baseUrl,
-      users,
-    };
-    ctx.helper.success({ ctx, res });
-  }
+    const { ctx, app } = this;
 
-  async show() {
-    const { ctx, service } = this;
-    const resp = await service.dog.show();
-    await ctx.render("test.nj", { url: resp.message });
+    const { status } = app.redis;
+    const { version } = await app.mongoose.connection.db.command({
+      buildInfo: 1,
+    });
+
+    ctx.helper.success({
+      ctx,
+      res: {
+        dbVersion: version,
+        redisStatus: status,
+        appVersion,
+        env: process.env.PING_ENV,
+      },
+    });
   }
 }

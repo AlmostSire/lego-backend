@@ -33,9 +33,6 @@ export default class AppBoot implements IBoot {
   }
 
   async didReady() {
-    // const ctx = this.app.createAnonymousContext();
-    // const res = await ctx.service.dog.show();
-    // console.log("did ready res", res);
     console.log("final middleware", this.app.middleware);
   }
 }

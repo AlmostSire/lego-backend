@@ -139,7 +139,10 @@ export default class WorkController extends Controller {
     const listCondition: IndexCondition = {
       select: "id author copiedCount coverImg desc title user isHot createdAt",
       populate: { path: "user", select: "username nickName picture" },
-      find: { isPublic: true, isTemplate: true },
+      find: {
+        // isPublic: true,
+        isTemplate: true,
+      },
       ...(pageIndex && { pageIndex: parseInt(pageIndex) }),
       ...(pageSize && { pageSize: parseInt(pageSize) }),
     };

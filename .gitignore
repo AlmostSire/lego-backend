@@ -26,3 +26,5 @@ app/**/*.map
 config/**/*.map 
 test/**/*.map 
 
+.docker-volumes
+
