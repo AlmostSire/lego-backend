@@ -1,11 +1,11 @@
 const { Client } = require("oss-client");
-const { config } = require("dotenv");
+const dotenv = require("dotenv");
 const path = require("path");
 const fs = require("fs");
 
-const publicPath = path.resolve(__dirname, "../app/public");
 // 设置环境变量
-config();
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
+const publicPath = path.resolve(__dirname, "../app/public");
 // 新建一个实例
 const client = new Client({
   accessKeyId: process.env.ALC_ACCESS_ID,
