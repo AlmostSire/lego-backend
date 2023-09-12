@@ -1,7 +1,7 @@
 name: More Actions Demo
 on: [push]
 jobs:
-  Check-Github-Actions:
+  More-Actions-Demo:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
