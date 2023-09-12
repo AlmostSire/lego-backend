@@ -1,0 +1,18 @@
+name: More Actions Demo
+on: [push]
+jobs:
+  Check-Github-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: AlmostSire/lego-components
+      - name: List files in the repo
+        run: |
+          ls ${{ github.workspace }}
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: node -v
+      - run: npm install -g typescript
+      - run: tsc -v
