@@ -6,6 +6,7 @@ const fs = require("fs");
 // 设置环境变量
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 const publicPath = path.resolve(__dirname, "../app/public");
+console.log(process.env);
 // 新建一个实例
 const client = new Client({
   accessKeyId: process.env.ALC_ACCESS_ID,
