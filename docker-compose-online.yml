@@ -20,7 +20,7 @@ services:
     command: >
       -- requirepass ${REDIS_PASSWORD}
   lego-backend:
-    image: registry.cn-shanghai.aliyuncs.com/almostlover/lego:1.0.3
+    image: registry.cn-shanghai.aliyuncs.com/almostlover/lego:1.0.5
     container_name: lego-backend
     ports:
       - 7001:7001
