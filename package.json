@@ -29,6 +29,7 @@
     "mongoose": "^5.8.3",
     "mongoose-sequence": "^5.3.1",
     "nanoid": "^3.1.30",
+    "release-it": "^16.1.5",
     "stream-wormhole": "^1.1.0",
     "vue": "^3.3.4"
   },
@@ -66,7 +67,8 @@
     "tsc": "ets && tsc -p tsconfig.json",
     "build:tpl:dev": "npx webpack --config webpack/webpack.config.js",
     "build:tpl:prod": "npx webpack --config webpack/webpack.config.js --env production && npm run upload",
-    "upload": "node webpack/uploadToOSS.js"
+    "upload": "node webpack/uploadToOSS.js",
+    "release": "release-it"
   },
   "ci": {
     "version": "16, 18",
