@@ -19,7 +19,7 @@ jobs:
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
       # 使用正确的阿里云 tag 进行 doccker build
-      - name: Build image for Docker
-        run: docker build --tag registry.cn-shanghai.aliyuncs.com/almostlover/lego:1.0.4 .
+      - name: Build Image for Docker
+        run: docker build --tag registry.cn-shanghai.aliyuncs.com/almostlover/lego:1.0.5 .
       - name: Push Image to ACR
-        run: docker push registry.cn-shanghai.aliyuncs.com/almostlover/lego:1.0.4
+        run: docker push registry.cn-shanghai.aliyuncs.com/almostlover/lego:1.0.5
