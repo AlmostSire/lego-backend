@@ -24,7 +24,11 @@ export default () => {
 
   // 2 配置 cors 允许的域名
   config.security = {
-    domainWhiteList: ["https://imooc-lego.com", "https://www.imooc-lego.com"],
+    domainWhiteList: [
+      "https://imooc-lego.com",
+      "https://www.imooc-lego.com",
+      "http://localhost:8080",
+    ],
   };
 
   // 3 配置对应的 jwt 过期时间
