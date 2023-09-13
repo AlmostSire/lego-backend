@@ -10,7 +10,8 @@ jobs:
       - uses: actions/checkout@v4
       # 测试 github context
       - name: "test github context info"
-        run: echo ${{ github.ref }}
+        run: |
+          echo ${{ github.ref }}
           echo ${{ github.ref_name }}
           echo ${{ github.sha }}
       # 测试查找并且替换
