@@ -142,7 +142,7 @@ export default class UtilsController extends Controller {
             return ctx.helper.error({
               ctx,
               type: "imageUploadFileSizeError",
-              error: `Reach fileSize limit ${app.config.multipart.fieldSize}`,
+              error: `Reach fileSize limit ${app.config.multipart.fileSize}`,
             });
           }
         } catch (e) {

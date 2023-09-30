@@ -30,6 +30,7 @@ export default (app: Application) => {
   router.delete("/channels/:id", controller.work.deleteChannel);
 
   router.get("/templates", controller.work.templateList);
+  router.get("/templates/:id", controller.work.template);
 
   router.post("/utils/upload", controller.utils.uploadMutipleFiles);
 

@@ -94,7 +94,7 @@ export default class WorkController extends Controller {
       { $pull: { channels: { id } } },
       { new: true }
     );
-    ctx.helper.success({ ctx, res: work });
+    ctx.helper.success({ ctx, res: work?.channels });
   }
 
   @validateInput(workCreateRules, "workValidateFail")
@@ -129,6 +129,17 @@ export default class WorkController extends Controller {
     const { ctx } = this;
     const { id } = ctx.params;
     const res = await this.ctx.model.Work.findOne({ id }).lean();
+    ctx.helper.success({ ctx, res });
+  }
+
+  async template() {
+    const { ctx } = this;
+    const { id } = ctx.params;
+    const res = await this.ctx.model.Work.findOne({ id }).lean();
+    console.log(res, "res");
+    if (!res || !res.isTemplate) {
+      return ctx.helper.error({ ctx, type: "workNoPublicFail" });
+    }
     ctx.helper.success({ ctx, res });
   }
 
