@@ -28,6 +28,7 @@ export default () => {
       "https://imooc-lego.com",
       "https://www.imooc-lego.com",
       "http://localhost:8080",
+      "http://localhost:8081",
     ],
   };
 
