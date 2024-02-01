@@ -35,4 +35,8 @@ export default (app: Application) => {
   router.post("/utils/upload", controller.utils.uploadMutipleFiles);
 
   router.get("/pages/:idAndUuid", controller.utils.renderH5Page);
+
+  router.get("/template/project", controller.template.getProjectTemplates);
+  router.get("/template/section", controller.template.getSectionTemplates);
+  router.get("/template/page", controller.template.getPageTemplates);
 };

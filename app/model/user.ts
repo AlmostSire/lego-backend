@@ -45,7 +45,6 @@ function initUserModel(app: Application) {
   );
 
   UserSchema.plugin(AutoIncrement, { inc_field: "id", id: "users_id_counter" });
-
   return app.mongoose.model<UserProps>("User", UserSchema);
 }
 

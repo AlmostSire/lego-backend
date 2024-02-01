@@ -51,12 +51,11 @@ export default (appInfo: EggAppInfo) => {
   // 设置mongodb地址等
   config.mongoose = {
     url: "mongodb://localhost:27017/lego",
-    options: {
-      user: process.env.MONGO_DB_USERNAME,
-      pass: process.env.MONGO_DB_PASSWORD,
-
-      // authSource: "admin",
-    },
+    // options: {
+    //   user: process.env.MONGO_DB_USERNAME,
+    //   pass: process.env.MONGO_DB_PASSWORD,
+    //   authSource: "admin",
+    // },
   };
 
   // 设置 redis 配置
